@@ -1,0 +1,31 @@
+<script lang="ts">
+    export let projectName: string = "Project Name";
+    export let titleName: string = "Sound Cues";
+</script>
+
+<div id="title-bar" class="middleground">
+    <span>{projectName}</span>
+    <h2>{titleName}</h2>
+</div>
+
+<style lang="scss">
+  #title-bar {
+    height: 8%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding-left: 1vw;
+    padding-bottom: 1vh;
+    padding-top: 1vh;
+
+    span {
+      font-size: 0.8vw;
+    }
+
+    h2 {
+      margin: 0;
+    }
+  }
+</style>
