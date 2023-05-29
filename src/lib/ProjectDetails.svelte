@@ -1,10 +1,10 @@
 <script lang="ts">
-    import Navbar from "./Navbar.svelte";
-    import SoundCuesTab from "./SoundCuesTab.svelte";
+    import Navbar from "./comps/Navbar.svelte";
+    import SoundCuesTab from "./soundcues/SoundCuesTab.svelte";
     let tab = 0;
 </script>
 
-<main>
+<main id="project-details">
     <Navbar bind:selected={tab}/>
     <div id="content">
         {#if tab === 0}

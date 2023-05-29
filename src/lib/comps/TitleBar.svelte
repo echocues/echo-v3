@@ -1,11 +1,11 @@
 <script lang="ts">
-    export let projectName: string = "Project Name";
-    export let titleName: string = "Sound Cues";
+    export let subTitle: string = "Project Name";
+    export let title: string = "Sound Cues";
 </script>
 
 <div id="title-bar" class="middleground">
-    <span>{projectName}</span>
-    <h2>{titleName}</h2>
+    <span>{subTitle}</span>
+    <h2>{title}</h2>
 </div>
 
 <style lang="scss">

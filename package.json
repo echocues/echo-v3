@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "konva": "^9.0.2",
-    "pizzicato": "^0.6.4"
+    "pizzicato": "^0.6.4",
+    "svelte-spa-router": "^3.3.0"
   }
 }

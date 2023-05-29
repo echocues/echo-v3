@@ -11,7 +11,9 @@
   
   --gap-size: 4px;
   
-  font-family: 'Poppins', sans-serif;
+  --font-fam: 'Poppins', sans-serif;
+  
+  font-family: var(--font-fam);
   line-height: 1.5;
   font-weight: 400;
 
@@ -58,7 +60,7 @@ button {
   background-color: rgba(0, 0, 0, 0);
   border: none;
   color: var(--contrast-color);
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-fam);
   
   &:hover {
     cursor: pointer;
