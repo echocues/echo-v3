@@ -3,22 +3,27 @@
     export let title: string = "Sound Cues";
 </script>
 
-<div id="title-bar" class="middleground">
-    <span>{subTitle}</span>
-    <h2>{title}</h2>
+<div class="title-bar middleground">
+	<div id="title">
+		<span>{subTitle}</span>
+		<h2>{title}</h2>
+	</div>
+	<div id="tail">
+		<slot/>
+	</div>
 </div>
 
 <style lang="scss">
-  #title-bar {
+  .title-bar {
     height: 8%;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
     padding-left: 1vw;
+    padding-right: 1vw;
     padding-bottom: 1vh;
     padding-top: 1vh;
+
+	display: flex;
+	align-items: center;
 
     span {
       font-size: 0.8vw;
@@ -27,5 +32,15 @@
     h2 {
       margin: 0;
     }
+
+    #title {
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	}
+
+	#tail {
+	  margin-left: auto;
+	}
   }
 </style>

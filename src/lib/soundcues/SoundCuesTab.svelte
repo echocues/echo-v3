@@ -2,17 +2,9 @@
     import {EchoSoundCue} from "../ts/models";
     import TitleBar from "../comps/TitleBar.svelte";
     import SoundCueEditor from "./SoundCueEditor.svelte";
-    import {onMount} from "svelte";
-    import {EchoStores} from "../ts/stores";
-    import {get} from "svelte/store";
-
-    let soundcues: EchoSoundCue[] = [];
+    
+    export let soundcues: EchoSoundCue[] = [];
     let selectedSoundCue: EchoSoundCue = undefined;
-
-    onMount(() => {
-        soundcues = get(EchoStores.openedProject).sound_cues;
-    });
-
 </script>
 
 <main>
@@ -67,8 +59,9 @@
           align-items: center;
 
           span {
-            font-size: 0.8vw;
+            font-size: 1vw;
             line-height: 100%;
+            text-align: start;
           }
 
           &:hover {

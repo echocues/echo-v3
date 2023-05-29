@@ -5,7 +5,7 @@
     
     const routes = {
         "/": ProjectsList,
-        "/project": ProjectDetails,
+        "/project/:id": ProjectDetails,
     }
 </script>
 
