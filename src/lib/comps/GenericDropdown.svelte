@@ -56,15 +56,14 @@
       background-color: var(--foreground-color);
       
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
 
       width: 100%;
       height: 100%;
 
       border-radius: 8px;
-      padding: 0;
+      padding: 0 12px 0 8px;
 
       p {
         margin-top: 4px;

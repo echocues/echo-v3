@@ -14,7 +14,7 @@
             {#each soundcues as cue}
                 <button on:click={() => selectedSoundCue = cue}>
                     <span>
-                        {cue.fileName}
+                        {cue.displayName}
                     </span>
                 </button>
             {/each}

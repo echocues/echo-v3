@@ -4,6 +4,7 @@
     import type {EchoSoundCue} from "../ts/models";
     import SoundCueProp from "./SoundCueProp.svelte";
     import SelectDropdown from "../comps/SelectDropdown.svelte";
+    import {EchoAudioSourceMapper, EchoAudioSourceType} from "../ts/models";
 
     export let cue: EchoSoundCue;
     let waveform: HTMLElement;
@@ -22,9 +23,7 @@
     });
 
     function updateWaveform() {
-        console.log(cue);
-
-        if (stage !== undefined && waveform !== undefined) {
+        if (stage && waveform) {
             stage.width(waveform.clientWidth);
             stage.height(waveform.clientHeight);
             stage.removeChildren();
@@ -35,7 +34,7 @@
     function createLayers(): Konva.Layer[] {
         let layer = new Konva.Layer();
         let text = new Konva.Text({
-            text: cue.fileName,
+            text: cue.displayName,
             fill: "#ffffff",
             x: 0,
             y: 0,
@@ -59,11 +58,15 @@
         <div id="properties" class="middleground">
             <h3>Properties</h3>
             <SoundCueProp propName="Name">
-                <input type="text" bind:value={cue.fileName}/>
+                <input type="text" bind:value={cue.displayName}/>
             </SoundCueProp>
             <SoundCueProp propName="Audio Source">
-                <SelectDropdown options={["Audio Source", "Recording", "Synthesize"]}/>
+                <SelectDropdown options={Array.from(EchoAudioSourceMapper.keys())} bind:selected={cue.source.type}/>
             </SoundCueProp>
+
+            <button on:click={() => console.log(cue)}>
+                Debug Print
+            </button>
         </div>
         <div id="property-details" class="middleground">
             <h3>Property Details</h3>
@@ -117,20 +120,28 @@
     }
   }
 
+  @mixin property() {
+    background-color: var(--foreground-color);
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 4vh;
+    border-radius: 8px;
+
+    padding: 4px 8px;
+    box-sizing: border-box;
+
+    color: var(--contrast-color);
+    font-family: var(--font-fam);
+  }
+
   :global(.SoundCueProp) {
     input {
-      background-color: var(--foreground-color);
-      outline: none;
-      border: none;
-      width: 100%;
-      height: 4vh;
-      border-radius: 8px;
+      @include property;
+    }
 
-      padding: 4px 8px;
-      box-sizing: border-box;
-
-      color: var(--contrast-color);
-      font-family: var(--font-fam);
+    button {
+      @include property;
     }
   }
 </style>

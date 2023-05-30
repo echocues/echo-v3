@@ -2,7 +2,7 @@
     export let propName: string;
 </script>
 
-<div class="SoundCueProp">
+<div class="SoundCueProp {$$props.class}" id={$$props.id}>
     <span>{propName}</span>
     <slot/>
 </div>

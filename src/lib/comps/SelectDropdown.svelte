@@ -8,9 +8,7 @@
     let dropdown: GenericDropdown;
     
     function select(option: string) {
-        buttons[selected].classList.remove("selected");
         selected = option;
-        buttons[selected].classList.add("selected");
         dropdown.toggle();
     }
     
@@ -18,12 +16,10 @@
 
 <GenericDropdown text={selected} bind:this={dropdown}>
     {#each options as option}
-        <button on:click={() => select(option)} bind:this={buttons[option]}>{option}</button>
+        {#if selected === option}
+            <button on:click={() => select(option)} bind:this={buttons[option]} style="color: var(--accent-color)">{option}</button>
+        {:else}
+            <button on:click={() => select(option)} bind:this={buttons[option]}>{option}</button>
+        {/if}
     {/each}
 </GenericDropdown>
-
-<style lang="scss">
-    :global(.selected) {
-      color: var(--accent-color);
-    }
-</style>

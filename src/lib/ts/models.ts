@@ -1,12 +1,35 @@
+export enum EchoAudioSourceType {
+    File = "Audio File",
+}
+
+export const EchoAudioSourceMapper = new Map<EchoAudioSourceType, () => EchoAudioSource>()
+    .set(EchoAudioSourceType.File, () => new EchoFileAudioSource());
+
+export interface EchoAudioSource {
+    type: EchoAudioSourceType;
+    play();
+}
+
+export class EchoFileAudioSource implements EchoAudioSource {
+    file: string;
+    type: EchoAudioSourceType = EchoAudioSourceType.File;
+
+    play() {
+    }
+}
+
 export class EchoSoundCue {
     identifier: string;
-    fileName: string;
+    source: EchoAudioSource;
+    displayName: string;
     volume: number;
     speed: number;
 
     constructor(json: any) {
         this.identifier = json.identifier;
-        this.fileName = json.file_name;
+        this.source = new EchoFileAudioSource();
+        this.source.file = json.file_name;
+        this.displayName = this.source.file;
         this.volume = json.volume;
         this.speed = json.speed;
     }
