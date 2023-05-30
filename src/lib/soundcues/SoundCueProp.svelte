@@ -12,9 +12,10 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-
+    
     span {
       font-weight: 300;
+      font-size: 1vw;
     }
   }
 </style>

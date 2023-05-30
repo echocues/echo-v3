@@ -1,13 +1,13 @@
 <script lang="ts">
     import {EchoSoundCue} from "../ts/models";
     import TitleBar from "../comps/TitleBar.svelte";
-    import SoundCueEditor from "./SoundCueEditor.svelte";
-    
+    import SoundCueEditor from "./SoundCueDetails.svelte";
+
     export let soundcues: EchoSoundCue[] = [];
     let selectedSoundCue: EchoSoundCue = undefined;
 </script>
 
-<main>
+<main class="SoundCuesTab">
     <div id="sound-cues">
         <TitleBar/>
         <div id="sound-cues-list" class="middleground">
@@ -28,7 +28,7 @@
 </main>
 
 <style lang="scss">
-  main {
+  .SoundCuesTab {
     width: 100%;
     height: 100%;
 
@@ -59,7 +59,7 @@
           align-items: center;
 
           span {
-            font-size: 1vw;
+            font-size: .8vw;
             line-height: 100%;
             text-align: start;
           }

@@ -8,7 +8,7 @@
     export let params = {};
 </script>
 
-<main id="project-details">
+<main class="ProjectDetails">
     <Navbar bind:selected={tab}/>
     <div id="content">
         {#await EchoBackend.getProject(params["id"])}
@@ -22,7 +22,7 @@
 </main>
 
 <style lang="scss">
-  main {
+  .ProjectDetails {
     display: flex;
     flex-direction: row;
     gap: var(--gap-size);
@@ -30,10 +30,6 @@
 
   #content {
     width: 100%;
-    height: 100vh;
-    gap: var(--gap-size);
-
-    display: flex;
-    flex-direction: column;
+    min-height: 100%;
   }
 </style>
