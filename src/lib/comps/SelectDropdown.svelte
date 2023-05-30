@@ -23,7 +23,7 @@
 </GenericDropdown>
 
 <style lang="scss">
-    .selected {
+    :global(.selected) {
       color: var(--accent-color);
     }
 </style>
