@@ -4,7 +4,7 @@
     import type {EchoSoundCue} from "../ts/models";
     import SoundCueProp from "./SoundCueProp.svelte";
     import SelectDropdown from "../comps/SelectDropdown.svelte";
-    import {EchoAudioSourceMapper, EchoAudioSourceType} from "../ts/models";
+    import {EchoAudioSourceMapper, EchoAudioSourceType, EchoFileAudioSource} from "../ts/models";
 
     export let cue: EchoSoundCue;
     let waveform: HTMLElement;
@@ -61,7 +61,17 @@
                 <input type="text" bind:value={cue.displayName}/>
             </SoundCueProp>
             <SoundCueProp propName="Audio Source">
-                <SelectDropdown options={Array.from(EchoAudioSourceMapper.keys())} bind:selected={cue.source.type}/>
+                <div id="audio-source">
+                    <SelectDropdown options={Array.from(EchoAudioSourceMapper.keys())} bind:selected={cue.source.type}/>
+                    <div id="audio-source-details">
+                        {#if cue.source.type === EchoAudioSourceType.File}
+                            <input 
+                                accept="audio/vorbis"
+                                type="file"
+                            />
+                        {/if}
+                    </div>
+                </div>
             </SoundCueProp>
 
             <button on:click={() => console.log(cue)}>
@@ -69,8 +79,7 @@
             </button>
         </div>
         <div id="property-details" class="middleground">
-            <h3>Property Details</h3>
-            <span>This property has no extensive details</span>
+            <h3>Advanced Settings</h3>
         </div>
     </div>
 </div>
@@ -123,16 +132,22 @@
   @mixin property() {
     background-color: var(--foreground-color);
     outline: none;
-    border: none;
+    border: solid transparent 2px;
     width: 100%;
     height: 4vh;
     border-radius: 8px;
 
-    padding: 4px 8px;
+    padding: 2px 6px;
     box-sizing: border-box;
 
     color: var(--contrast-color);
     font-family: var(--font-fam);
+    
+    transition: border 100ms ease-in-out;
+    
+    &:hover {
+      border: solid var(--accent-color) 2px;
+    }
   }
 
   :global(.SoundCueProp) {
@@ -142,6 +157,29 @@
 
     button {
       @include property;
+    }
+  }
+  
+  #audio-source {
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+   
+    #audio-source-details {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      span {
+        font-size: 0.8vw;
+      }
+      
+      button {
+        width: 30%;
+      }
     }
   }
 </style>

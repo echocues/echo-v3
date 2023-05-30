@@ -62,9 +62,16 @@
       width: 100%;
       height: 100%;
 
+      border: solid transparent 2px;
       border-radius: 8px;
-      padding: 0 12px 0 8px;
+      padding: 0 10px 0 6px;
 
+      transition: border 100ms ease-in-out;
+
+      &:hover {
+        border: solid var(--accent-color) 2px;
+      }
+      
       p {
         margin-top: 4px;
         margin-bottom: 4px;
