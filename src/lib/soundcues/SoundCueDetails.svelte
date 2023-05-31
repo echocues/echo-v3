@@ -5,6 +5,7 @@
     import SoundCueProp from "./SoundCueProp.svelte";
     import SelectDropdown from "../comps/SelectDropdown.svelte";
     import {EchoAudioSourceMapper, EchoAudioSourceType, EchoFileAudioSource} from "../ts/models";
+    import FilePicker from "../comps/FilePicker.svelte";
 
     export let cue: EchoSoundCue;
     let waveform: HTMLElement;
@@ -65,10 +66,7 @@
                     <SelectDropdown options={Array.from(EchoAudioSourceMapper.keys())} bind:selected={cue.source.type}/>
                     <div id="audio-source-details">
                         {#if cue.source.type === EchoAudioSourceType.File}
-                            <input 
-                                accept="audio/vorbis"
-                                type="file"
-                            />
+                            <FilePicker/>
                         {/if}
                     </div>
                 </div>
