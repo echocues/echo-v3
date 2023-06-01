@@ -156,6 +156,10 @@
     button {
       @include property;
     }
+    
+    :global(.FilePicker) {
+      @include property;
+    }
   }
   
   #audio-source {
