@@ -158,7 +158,7 @@
     }
     
     :global(.FilePicker) {
-      @include property;
+      height: 4vh;
     }
   }
   

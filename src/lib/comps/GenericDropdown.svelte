@@ -72,11 +72,6 @@
         border: solid var(--accent-color) 2px;
       }
       
-      p {
-        margin-top: 4px;
-        margin-bottom: 4px;
-      }
-
       svg {
         width: 0.4vw;
         color: var(--contrast-color);

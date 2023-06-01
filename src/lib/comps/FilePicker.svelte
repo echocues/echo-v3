@@ -1,14 +1,20 @@
+<script lang="ts">
+    
+</script>
+
 <div class="FilePicker">
-    <input type="file"/>
+    <button>Choose File</button>
+    <span>File Name</span>
 </div>
 
 <style lang="scss">
     .FilePicker {
-      min-width: 100%;
-      min-height: 100%;
+      display: flex;
+      align-items: center;
       
-      input {
-        display: none;
+      button {
+        background-color: var(--foreground-color);
+        padding: 0;
       }
     }
 </style>
