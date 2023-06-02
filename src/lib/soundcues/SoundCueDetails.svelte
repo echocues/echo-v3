@@ -6,6 +6,9 @@
     import SelectDropdown from "../comps/SelectDropdown.svelte";
     import {EchoAudioSourceMapper, EchoAudioSourceType, EchoFileAudioSource} from "../ts/models";
     import FilePicker from "../comps/FilePicker.svelte";
+    import {EchoBackend} from "../ts/api";
+    import {EchoStores} from "../ts/stores";
+    import {get} from "svelte/store";
 
     export let cue: EchoSoundCue;
     let waveform: HTMLElement;
@@ -66,7 +69,7 @@
                     <SelectDropdown options={Array.from(EchoAudioSourceMapper.keys())} bind:selected={cue.source.type}/>
                     <div id="audio-source-details">
                         {#if cue.source.type === EchoAudioSourceType.File}
-                            <FilePicker/>
+                            <FilePicker initialValue={cue.source.file}/>
                         {/if}
                     </div>
                 </div>
@@ -74,6 +77,9 @@
 
             <button on:click={() => console.log(cue)}>
                 Debug Print
+            </button>
+            <button on:click={() => cue.source.play()}>
+                test
             </button>
         </div>
         <div id="property-details" class="middleground">
@@ -159,6 +165,10 @@
     
     :global(.FilePicker) {
       height: 4vh;
+      
+      :global(button) {
+        @include property;
+      }
     }
   }
   

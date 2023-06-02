@@ -2,10 +2,16 @@
     import Navbar from "./comps/Navbar.svelte";
     import SoundCuesTab from "./soundcues/SoundCuesTab.svelte";
     import {EchoBackend} from "./ts/api";
+    import {onMount} from "svelte";
+    import {EchoStores} from "./ts/stores.js";
 
     let tab = 0;
 
     export let params = {};
+    
+    onMount(() => {
+       EchoStores.openedProject.set(params['id']);
+    });
 </script>
 
 <main class="ProjectDetails">

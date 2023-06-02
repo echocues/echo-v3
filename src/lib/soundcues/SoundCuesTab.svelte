@@ -4,6 +4,7 @@
     import SoundCueEditor from "./SoundCueDetails.svelte";
 
     export let soundcues: EchoSoundCue[] = [];
+    
     let selectedSoundCue: EchoSoundCue = undefined;
 </script>
 

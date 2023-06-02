@@ -1,3 +1,7 @@
+import {EchoBackend} from "./api";
+import {EchoStores} from "./stores";
+import {get} from "svelte/store";
+
 export enum EchoAudioSourceType {
     File = "Audio File",
 }
@@ -7,14 +11,27 @@ export const EchoAudioSourceMapper = new Map<EchoAudioSourceType, () => EchoAudi
 
 export interface EchoAudioSource {
     type: EchoAudioSourceType;
-    play();
+
+    play(): Promise<void>;
 }
 
 export class EchoFileAudioSource implements EchoAudioSource {
     file: string;
     type: EchoAudioSourceType = EchoAudioSourceType.File;
 
-    play() {
+    async play(): Promise<void> {
+        // let stream = await EchoBackend.getAudio(get(EchoStores.openedProject), this.file);
+        // let sound = Pizzicato.Sound({
+        //     source: "script",
+        //     options: {
+        //         audioFunction: function (e) {
+        //             let output = e.outputBuffer.getChannelData(0);
+        //             for (var i = 0; i < e.outputBuffer.length; i++)
+        //                 output[i] = Math.random();
+        //         }
+        //     }
+        // });
+        // sound.play();
     }
 }
 
@@ -55,7 +72,7 @@ export class EchoEvent {
     cues: string[];
     notes: string[];
     time: EchoTime;
-    
+
     constructor(json: any) {
         this.cues = json.cues;
         this.notes = json.notes;
@@ -66,7 +83,7 @@ export class EchoEvent {
 export class EchoScene {
     name: string;
     events: EchoEvent[]
-    
+
     constructor(json: any) {
         this.name = json.name;
         this.events = json.events.map(eventJson => new EchoEvent(eventJson));
@@ -77,7 +94,7 @@ export class EchoTime {
     hours: number;
     minutes: number;
     seconds: number
-    
+
     constructor(json: any) {
         this.hours = json.hours;
         this.minutes = json.minutes;

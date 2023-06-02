@@ -15,15 +15,26 @@ export namespace EchoBackend {
         return json.map(projectJson => new EchoProject(projectJson)); 
     }
 
-	export async function getProject(project_id: string): Promise<EchoProject> {
-		let response = await fetch(`${url}/project/${project_id}`);
+	export async function getProject(projectId: string): Promise<EchoProject> {
+		let response = await fetch(`${url}/project/${projectId}`);
 
 		if (!response.ok) {
-			console.log(`Failed to get project with id: ${project_id}`);
+			console.log(`Failed to get project with id: ${projectId}`);
 			return undefined;
 		}
 
 		let json = await response.json();
 		return new EchoProject(json);
 	}
+    
+    export async function getAudio(projectId: string, fileName: string): Promise<ReadableStream> {
+        let response = await fetch(`${url}/audio/${projectId}/${fileName}`);
+    
+        if (!response.ok) {
+            console.log(`Failed to get audio file with name: ${fileName} from project ${projectId}`);
+            return undefined;
+        }
+        
+        return response.body;
+    }
 }
