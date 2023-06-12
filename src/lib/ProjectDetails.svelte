@@ -23,6 +23,7 @@
                 <SoundCuesTab soundcues={project.sound_cues}/>
             {/if}
         {:catch error}
+            <p>Error: {error}</p>
         {/await}
     </div>
 </main>

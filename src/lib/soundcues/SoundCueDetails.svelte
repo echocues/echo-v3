@@ -4,11 +4,8 @@
     import type {EchoSoundCue} from "../ts/models";
     import SoundCueProp from "./SoundCueProp.svelte";
     import SelectDropdown from "../comps/SelectDropdown.svelte";
-    import {EchoAudioSourceMapper, EchoAudioSourceType, EchoFileAudioSource} from "../ts/models";
+    import {EchoAudioSourceMapper, EchoAudioSourceType} from "../ts/models";
     import FilePicker from "../comps/FilePicker.svelte";
-    import {EchoBackend} from "../ts/api";
-    import {EchoStores} from "../ts/stores";
-    import {get} from "svelte/store";
 
     export let cue: EchoSoundCue;
     let waveform: HTMLElement;
@@ -79,7 +76,7 @@
                 Debug Print
             </button>
             <button on:click={() => cue.source.play()}>
-                test
+                Play
             </button>
         </div>
         <div id="property-details" class="middleground">
