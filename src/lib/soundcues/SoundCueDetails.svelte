@@ -1,56 +1,38 @@
 <script lang="ts">
-    import {afterUpdate, onMount} from "svelte";
-    import Konva from "konva";
     import type {EchoSoundCue} from "../ts/models";
     import SoundCueProp from "./SoundCueProp.svelte";
     import SelectDropdown from "../comps/SelectDropdown.svelte";
     import {EchoAudioSourceMapper, EchoAudioSourceType} from "../ts/models";
     import FilePicker from "../comps/FilePicker.svelte";
 
+    import WaveSurfer from "wavesurfer.js";
+    import {afterUpdate} from "svelte";
+    import {get} from "svelte/store";
+    import {EchoBackend} from "../ts/api";
+    import {EchoStores} from "../ts/stores";
+
     export let cue: EchoSoundCue;
     let waveform: HTMLElement;
-    let stage: Konva.Stage;
-
-    onMount(() => {
-        let width = waveform.clientWidth;
-        let height = waveform.clientHeight;
-        stage = new Konva.Stage({
-            container: "waveform",
-            width: width,
-            height: height
+    
+    function setupWaveform() {
+        waveform.innerHTML = "";
+        
+        let waveColor = getComputedStyle(waveform).getPropertyValue("--wave-color");
+        let completedColor = getComputedStyle(waveform).getPropertyValue("--wave-color-complete");
+        
+        let waveSurfer = WaveSurfer.create({
+            container: waveform,
+            waveColor: waveColor,
+            progressColor: completedColor,
+            url: EchoBackend.getAudioUrl(get(EchoStores.openedProject), cue.source.file),
         });
 
-        window.addEventListener("resize", updateWaveform);
-    });
-
-    function updateWaveform() {
-        if (stage && waveform) {
-            stage.width(waveform.clientWidth);
-            stage.height(waveform.clientHeight);
-            stage.removeChildren();
-            createLayers().forEach(layer => stage.add(layer));
-        }
+        waveSurfer.once('interaction', () => {
+            waveSurfer.play()
+        });
     }
 
-    function createLayers(): Konva.Layer[] {
-        let layer = new Konva.Layer();
-        let text = new Konva.Text({
-            text: cue.displayName,
-            fill: "#ffffff",
-            x: 0,
-            y: 0,
-            fontSize: 16,
-            fontFamily: getComputedStyle(document.body).getPropertyValue('--font-fam'),
-        })
-
-        layer.add(text);
-
-        return [
-            layer,
-        ];
-    }
-
-    afterUpdate(updateWaveform);
+    afterUpdate(setupWaveform)
 </script>
 
 <div class="SoundCueDetails">
@@ -89,6 +71,9 @@
   #waveform {
     width: 100%;
     height: 30%;
+    
+    --wave-color: var(--accent-color);
+    --wave-color-complete: desaturate(var(--accent-color), 20%);
   }
 
   #editor {
@@ -110,10 +95,6 @@
       flex: 5;
       height: 100%;
       padding: 0 16px;
-
-      span {
-        font-weight: 300;
-      }
     }
 
     h3 {
@@ -136,9 +117,9 @@
 
     color: var(--contrast-color);
     font-family: var(--font-fam);
-    
+
     transition: border 100ms ease-in-out;
-    
+
     &:hover {
       border: solid var(--accent-color) 2px;
     }
@@ -149,39 +130,27 @@
       @include property;
     }
 
-    button {
-      @include property;
-    }
-    
     :global(.FilePicker) {
       height: 4vh;
-      
+
       :global(button) {
         @include property;
       }
     }
   }
-  
+
   #audio-source {
     width: 100%;
     height: 100%;
-    
+
     display: flex;
     flex-direction: column;
     gap: 8px;
-   
+
     #audio-source-details {
       display: flex;
       align-items: center;
       gap: 8px;
-      
-      span {
-        font-size: 0.8vw;
-      }
-      
-      button {
-        width: 30%;
-      }
     }
   }
 </style>
