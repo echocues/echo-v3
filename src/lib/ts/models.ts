@@ -1,7 +1,7 @@
 import {EchoBackend} from "./api";
 import {EchoStores} from "./stores";
 import {get} from "svelte/store";
-import Pizzicato from "pizzicato";
+// import {Howler} from 'howler';
 
 export enum EchoAudioSourceType {
     File = "Audio File",
@@ -21,19 +21,12 @@ export class EchoFileAudioSource implements EchoAudioSource {
     type: EchoAudioSourceType = EchoAudioSourceType.File;
 
     async play(): Promise<void> {
-        // let stream = await EchoBackend.getAudio(get(EchoStores.openedProject), this.file);
-        
-        let sound = new Pizzicato.Sound({
-            source: "script",
-            options: {
-                audioFunction: function (e) {
-                    let output = e.outputBuffer.getChannelData(0);
-                    for (var i = 0; i < e.outputBuffer.length; i++)
-                        output[i] = Math.random();
-                }
-            }
-        });
-        sound.play();
+        // TODO
+        // let audioUrl = EchoBackend.getAudioUrl(get(EchoStores.openedProject), this.file);
+        // let sound = new Howler({
+        //     src: [audioUrl]
+        // })
+        // sound.play();
     }
 }
 

@@ -37,4 +37,8 @@ export namespace EchoBackend {
         
         return response.body;
     }
+    
+    export function getAudioUrl(projectId: string, fileName: string): string {
+        return `${url}/audio/${projectId}/${fileName}`
+    }
 }

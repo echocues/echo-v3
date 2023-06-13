@@ -71,13 +71,6 @@
                     </div>
                 </div>
             </SoundCueProp>
-
-            <button on:click={() => console.log(cue)}>
-                Debug Print
-            </button>
-            <button on:click={() => cue.source.play()}>
-                Play
-            </button>
         </div>
         <div id="property-details" class="middleground">
             <h3>Advanced Settings</h3>
