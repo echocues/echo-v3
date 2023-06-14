@@ -4,69 +4,47 @@
     import SelectDropdown from "../comps/SelectDropdown.svelte";
     import {EchoAudioSourceMapper, EchoAudioSourceType} from "../ts/models";
     import FilePicker from "../comps/FilePicker.svelte";
+    import SoundCueWaveform from "./SoundCueWaveform.svelte";
 
-    import {afterUpdate} from "svelte";
-    import {get} from "svelte/store";
-    import {EchoBackend} from "../ts/api";
-    import {EchoStores} from "../ts/stores";
-    import WaveSurfer from "wavesurfer.js";
-    import EnvelopePlugin from "wavesurfer.js/dist/plugins/envelope";
+	let cue: EchoSoundCue;
+	let waveform: SoundCueWaveform;
 
-    export let cue: EchoSoundCue;
-    let waveform: HTMLElement;
-    
-    function setupWaveform() {
-        waveform.innerHTML = "";
-        
-        const waveColor = getComputedStyle(waveform).getPropertyValue("--wave-color");
-        const completedColor = getComputedStyle(waveform).getPropertyValue("--wave-color-complete");
-        
-        const waveSurfer = WaveSurfer.create({
-            container: waveform,
-            waveColor: waveColor,
-            progressColor: completedColor,
-            url: EchoBackend.getAudioUrl(get(EchoStores.openedProject), cue.source.file),
-            height: "auto",
-            
-            barWidth: 2,
-            barGap: 2,
-            barRadius: 8,
-        });
-        
-        const envelope = waveSurfer.registerPlugin(EnvelopePlugin.create({
-            // TODO placeholder values
-            fadeInEnd: 2,
-            volume: cue.volume,
-        }))
-    }
+   	export function updatedCue(newCue: EchoSoundCue) {
+		cue = newCue;
+		if (!waveform) return;
+		waveform.setupWaveform(newCue);
+	}
 
-    afterUpdate(setupWaveform)
 </script>
 
-<div class="SoundCueDetails">
-    <div id="waveform" bind:this={waveform}></div>
-    <div id="editor">
-        <div id="properties" class="middleground">
-            <h3>Properties</h3>
-            <SoundCueProp propName="Name">
-                <input type="text" bind:value={cue.displayName}/>
-            </SoundCueProp>
-            <SoundCueProp propName="Audio Source">
-                <div id="audio-source">
-                    <SelectDropdown options={Array.from(EchoAudioSourceMapper.keys())} bind:selected={cue.source.type}/>
-                    <div id="audio-source-details">
-                        {#if cue.source.type === EchoAudioSourceType.File}
-                            <FilePicker initialValue={cue.source.file}/>
-                        {/if}
-                    </div>
-                </div>
-            </SoundCueProp>
-        </div>
-        <div id="property-details" class="middleground">
-            <h3>Advanced Settings</h3>
-        </div>
-    </div>
-</div>
+{#if cue}
+	<div class="SoundCueDetails">
+		<SoundCueWaveform bind:this={waveform} cue={cue}/>
+		<div id="editor">
+			<div id="properties" class="middleground">
+				<h3>Properties</h3>
+				<SoundCueProp propName="Name">
+					<input type="text" bind:value={cue.displayName}/>
+				</SoundCueProp>
+				<SoundCueProp propName="Audio Source">
+					<div id="audio-source">
+						<SelectDropdown options={Array.from(EchoAudioSourceMapper.keys())} bind:selected={cue.source.type}/>
+						<div id="audio-source-details">
+							{#if cue.source.type === EchoAudioSourceType.File}
+								<FilePicker initialValue={cue.source.file}/>
+							{/if}
+						</div>
+					</div>
+				</SoundCueProp>
+			</div>
+			<div id="property-details" class="middleground">
+				<h3>Advanced Settings</h3>
+			</div>
+		</div>
+	</div>
+{:else}
+	<div>Select a Cue to Get Started</div>
+{/if}
 
 <style lang="scss">
   .SoundCueDetails {
@@ -74,14 +52,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-  }
-
-  #waveform {
-    width: 100%;
-    height: 30%;
-    
-    --wave-color: var(--accent-color);
-    --wave-color-complete: var(--accent-color-dark);
   }
 
   #editor {

@@ -1,7 +1,6 @@
 import {EchoBackend} from "./api";
 import {EchoStores} from "./stores";
 import {get} from "svelte/store";
-// import {Howler} from 'howler';
 
 export enum EchoAudioSourceType {
     File = "Audio File",

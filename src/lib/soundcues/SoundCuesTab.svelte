@@ -4,8 +4,11 @@
     import SoundCueEditor from "./SoundCueDetails.svelte";
 
     export let soundcues: EchoSoundCue[] = [];
-    
-    let selectedSoundCue: EchoSoundCue = undefined;
+	let cueEditor: SoundCueEditor;
+
+	function selectCue(cue: EchoSoundCue) {
+		cueEditor.updatedCue(cue);
+	}
 </script>
 
 <main class="SoundCuesTab">
@@ -13,7 +16,7 @@
         <TitleBar/>
         <div id="sound-cues-list" class="middleground">
             {#each soundcues as cue}
-                <button on:click={() => selectedSoundCue = cue}>
+                <button on:click={() => selectCue(cue)}>
                     <span>
                         {cue.displayName}
                     </span>
@@ -22,9 +25,7 @@
         </div>
     </div>
     <div id="editor">
-        {#if selectedSoundCue !== undefined}
-            <SoundCueEditor cue={selectedSoundCue}/>
-        {/if}
+        <SoundCueEditor bind:this={cueEditor}/>
     </div>
 </main>
 
