@@ -5,11 +5,12 @@
     import {EchoAudioSourceMapper, EchoAudioSourceType} from "../ts/models";
     import FilePicker from "../comps/FilePicker.svelte";
 
-    import WaveSurfer from "wavesurfer.js";
     import {afterUpdate} from "svelte";
     import {get} from "svelte/store";
     import {EchoBackend} from "../ts/api";
     import {EchoStores} from "../ts/stores";
+    import WaveSurfer from "wavesurfer.js";
+    import EnvelopePlugin from "wavesurfer.js/dist/plugins/envelope";
 
     export let cue: EchoSoundCue;
     let waveform: HTMLElement;
@@ -17,19 +18,26 @@
     function setupWaveform() {
         waveform.innerHTML = "";
         
-        let waveColor = getComputedStyle(waveform).getPropertyValue("--wave-color");
-        let completedColor = getComputedStyle(waveform).getPropertyValue("--wave-color-complete");
+        const waveColor = getComputedStyle(waveform).getPropertyValue("--wave-color");
+        const completedColor = getComputedStyle(waveform).getPropertyValue("--wave-color-complete");
         
-        let waveSurfer = WaveSurfer.create({
+        const waveSurfer = WaveSurfer.create({
             container: waveform,
             waveColor: waveColor,
             progressColor: completedColor,
             url: EchoBackend.getAudioUrl(get(EchoStores.openedProject), cue.source.file),
+            height: "auto",
+            
+            barWidth: 2,
+            barGap: 2,
+            barRadius: 8,
         });
-
-        waveSurfer.once('interaction', () => {
-            waveSurfer.play()
-        });
+        
+        const envelope = waveSurfer.registerPlugin(EnvelopePlugin.create({
+            // TODO placeholder values
+            fadeInEnd: 2,
+            volume: cue.volume,
+        }))
     }
 
     afterUpdate(setupWaveform)
@@ -73,7 +81,7 @@
     height: 30%;
     
     --wave-color: var(--accent-color);
-    --wave-color-complete: desaturate(var(--accent-color), 20%);
+    --wave-color-complete: var(--accent-color-dark);
   }
 
   #editor {
