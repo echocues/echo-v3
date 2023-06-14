@@ -5,45 +5,62 @@
     import {EchoAudioSourceMapper, EchoAudioSourceType} from "../ts/models";
     import FilePicker from "../comps/FilePicker.svelte";
     import SoundCueWaveform from "./SoundCueWaveform.svelte";
+    import Toggle from "../comps/Toggle.svelte";
 
-	let cue: EchoSoundCue;
-	let waveform: SoundCueWaveform;
+    let cue: EchoSoundCue;
+    let waveform: SoundCueWaveform;
+    let enableVolumeOverlay: boolean = false;
 
-   	export function updatedCue(newCue: EchoSoundCue) {
-		cue = newCue;
-		if (!waveform) return;
-		waveform.setupWaveform(newCue);
-	}
+    export function updatedCue(newCue: EchoSoundCue) {
+        cue = newCue;
+        updateWaveform(newCue, enableVolumeOverlay);
+    }
+    
+    function updateWaveform(newCue: EchoSoundCue, enableEnvelope: boolean) {
+        if (!waveform) return;
+        waveform.setupWaveform(newCue, enableEnvelope);
+    }
+    
+    $: {
+        updateWaveform(cue, enableVolumeOverlay);
+    }
 
 </script>
 
 {#if cue}
-	<div class="SoundCueDetails">
-		<SoundCueWaveform bind:this={waveform} cue={cue}/>
-		<div id="editor">
-			<div id="properties" class="middleground">
-				<h3>Properties</h3>
-				<SoundCueProp propName="Name">
-					<input type="text" bind:value={cue.displayName}/>
-				</SoundCueProp>
-				<SoundCueProp propName="Audio Source">
-					<div id="audio-source">
-						<SelectDropdown options={Array.from(EchoAudioSourceMapper.keys())} bind:selected={cue.source.type}/>
-						<div id="audio-source-details">
-							{#if cue.source.type === EchoAudioSourceType.File}
-								<FilePicker initialValue={cue.source.file}/>
-							{/if}
-						</div>
-					</div>
-				</SoundCueProp>
-			</div>
-			<div id="property-details" class="middleground">
-				<h3>Advanced Settings</h3>
-			</div>
-		</div>
-	</div>
+    <div class="SoundCueDetails">
+        <SoundCueWaveform bind:this={waveform} cue={cue}/>
+        <div id="editor">
+            <div id="properties" class="middleground">
+                <h3>Properties</h3>
+                <SoundCueProp propName="Name">
+                    <input type="text" bind:value={cue.displayName}/>
+                </SoundCueProp>
+                <SoundCueProp propName="Audio Source">
+                    <div id="audio-source">
+                        <SelectDropdown options={Array.from(EchoAudioSourceMapper.keys())} bind:selected={cue.source.type}/>
+                        <div id="audio-source-details">
+                            {#if cue.source.type === EchoAudioSourceType.File}
+                                <FilePicker initialValue={cue.source.file}/>
+                            {/if}
+                        </div>
+                    </div>
+                </SoundCueProp>
+            </div>
+            <div id="property-details" class="middleground">
+                <h3>Advanced Settings</h3>
+                <SoundCueProp propName="Overlays">
+                    <div id="overlays">
+                        <Toggle bind:enabled={enableVolumeOverlay}>
+                            <span>Volume</span>
+                        </Toggle>
+                    </div>
+                </SoundCueProp>
+            </div>
+        </div>
+    </div>
 {:else}
-	<div>Select a Cue to Get Started</div>
+    <div>Select a Cue to Get Started</div>
 {/if}
 
 <style lang="scss">
@@ -73,6 +90,16 @@
       flex: 5;
       height: 100%;
       padding: 0 16px;
+      
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      
+      #overlays {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+      }
     }
 
     h3 {
