@@ -4,13 +4,14 @@
     import {EchoBackend} from "./ts/api";
     import {onMount} from "svelte";
     import {EchoStores} from "./ts/stores.js";
+    import ScriptsTab from "./scripts/ScriptsTab.svelte";
 
     let tab = 0;
 
     export let params = {};
-    
+
     onMount(() => {
-       EchoStores.openedProject.set(params['id']);
+        EchoStores.openedProject.set(params['id']);
     });
 </script>
 
@@ -21,6 +22,8 @@
         {:then project}
             {#if tab === 0}
                 <SoundCuesTab soundcues={project.sound_cues}/>
+            {:else if tab === 1}
+                <ScriptsTab/>
             {/if}
         {:catch error}
             <p>Error: {error}</p>

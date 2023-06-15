@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "animejs": "^3.2.1",
+    "svelte-lexical": "^0.3.2",
     "svelte-spa-router": "^3.3.0",
     "wavesurfer.js": "^7.0.0-beta.8"
   }
