@@ -1,9 +1,7 @@
 <script>
-    import {RichTextComposer} from "svelte-lexical";
 </script>
 
 <main class="ScriptsTab">
-    <RichTextComposer/>
 </main>
 
 <style lang="scss">
