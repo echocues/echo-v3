@@ -1,43 +1,50 @@
 <script lang="ts">
-    import {createEventDispatcher} from "svelte";
+	import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
 
     export let initialValue: string = undefined;
     let input: HTMLElement;
-    let files;
-    
-    const dispatch = createEventDispatcher();
-    
-    $: if (files) {
-        dispatch("fileChanged", {
-            files: files,
-        });
-    }
+	let files = {
+		accepted: [],
+		rejected: [],
+	}
+
+	function handleFilesSelect(e: any) {
+		const { acceptedFiles, fileRejections } = e.detail;
+		files.accepted = [...files.accepted, ...acceptedFiles];
+		files.rejected = [...files.rejected, ...fileRejections];
+		console.log(files)
+	}
 </script>
 
-<button class="FilePicker" on:click={() => input.click()}>
-    <input type="file" bind:this={input} bind:files/>
-    {#if files && files[0]}
-        <span>{files[0].name}</span>
+<Dropzone containerClasses="FilePicker" accept={["audio/*"]} inputElement={input} multiple={false} on:drop={handleFilesSelect}>
+  	<input type="file" bind:this={input}/>
+    {#if files && files.accepted && files.accepted[0]}
+        <span>{files.accepted[0].name}</span>
     {:else if initialValue}
         <span>{initialValue}</span>
     {:else}
         <span>No file selected</span>
     {/if}
-</button>
+</Dropzone>
 
 <style lang="scss">
-    .FilePicker {
+    :global(.FilePicker) {
       width: 100%;
-      height: 16vh;
-      border: dashed var(--foreground-color) 2px;
-      border-radius: 8px;
+      height: 16vh !important;
+      border: dashed var(--foreground-color) 2px !important;
+      border-radius: 8px !important;
+	  background-color: transparent !important;
       
       align-items: center;
-      justify-content: center;
-      
-      input {
-        display: none;
-      }
+      justify-content: center;  
+
+	  &:hover {
+		cursor: pointer;
+	  }
+	
+	  input {
+		display: none;
+	  }
     }
 </style>
 
