@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "animejs": "^3.2.1",
+    "path": "^0.12.7",
     "svelte-file-dropzone": "^2.0.1",
     "svelte-lexical": "^0.3.2",
     "svelte-spa-router": "^3.3.0",

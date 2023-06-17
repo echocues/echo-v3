@@ -6,6 +6,7 @@
     import {EchoBackend} from "../ts/api";
     import {EchoStores} from "../ts/stores";
     import type {EchoSoundCue} from "../ts/models";
+    import TimelinePlugin from "wavesurfer.js/dist/plugins/timeline";
 
     let waveform: HTMLElement;
     let waveSurfer: WaveSurfer;
@@ -35,11 +36,21 @@
 
         // destroy previous waveform
         waveform.innerHTML = "";
-
+        
         const waveColor = getComputedStyle(waveform).getPropertyValue("--wave-color");
         const completedColor = getComputedStyle(waveform).getPropertyValue("--wave-color-complete");
         const lineColor = getComputedStyle(waveform).getPropertyValue("--foreground-color");
 
+        const bottomTimline = TimelinePlugin.create({
+            height: 20,
+            timeInterval: 0.1,
+            primaryLabelInterval: 1,
+            style: {
+                fontSize: '12px',
+                color: lineColor,
+            },
+        });
+        
         waveSurfer = WaveSurfer.create({
             container: waveform,
             waveColor: waveColor,
@@ -49,6 +60,7 @@
             barWidth: 2,
             barGap: 2,
             barRadius: 8,
+            plugins: [bottomTimline],
         });
 
         resetCursor = waveSurfer.on("finish", () => {
