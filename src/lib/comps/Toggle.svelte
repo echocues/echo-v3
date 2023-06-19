@@ -17,6 +17,10 @@
     transition: background-color 100ms ease-in-out, border 100ms ease-in-out;
   }
   
+  .Toggle:hover {
+    border: solid var(--accent-color) 2px !important;
+  }
+  
   .Toggle.enabled {
     background-color: var(--accent-color);
     border: solid transparent 2px;

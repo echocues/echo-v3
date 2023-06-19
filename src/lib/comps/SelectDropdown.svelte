@@ -1,15 +1,20 @@
 <script lang="ts">
     import GenericDropdown from "./GenericDropdown.svelte";
+    import {createEventDispatcher} from "svelte";
 
     export let options: string[] = [];
     export let selected = options[0];
     
     let buttons = {};
     let dropdown: GenericDropdown;
+    let dispatcher = createEventDispatcher();
     
     function select(option: string) {
         selected = option;
         dropdown.toggle();
+        dispatcher("selectedoption", {
+            option: selected
+        })
     }
     
 </script>

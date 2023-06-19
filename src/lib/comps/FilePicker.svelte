@@ -34,11 +34,14 @@
       border-radius: 8px !important;
 	  background-color: transparent !important;
       
+      transition: border 100ms ease-in-out;
+      
       align-items: center;
       justify-content: center;  
 
 	  &:hover {
 		cursor: pointer;
+        border: dashed var(--accent-color) 2px !important;
 	  }
 	
 	  input {

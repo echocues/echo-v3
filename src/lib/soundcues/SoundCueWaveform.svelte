@@ -1,10 +1,7 @@
 <script lang="ts">
-    import {get} from "svelte/store";
     import {onMount} from "svelte";
     import WaveSurfer from "wavesurfer.js";
     import EnvelopePlugin from "wavesurfer.js/dist/plugins/envelope";
-    import {EchoBackend} from "../ts/api";
-    import {EchoStores} from "../ts/stores";
     import type {EchoSoundCue} from "../ts/models";
     import TimelinePlugin from "wavesurfer.js/dist/plugins/timeline";
 
@@ -23,6 +20,7 @@
     
     export let cue: EchoSoundCue;
 
+    // Called by SoundCueDetails
     export function setupWaveform(newCue: EchoSoundCue, showEnvelope: boolean) {
         // unsubscribe to previous event 
         if (resetCursor) resetCursor();
@@ -42,7 +40,6 @@
         const lineColor = getComputedStyle(waveform).getPropertyValue("--foreground-color");
 
         const bottomTimline = TimelinePlugin.create({
-            height: 20,
             timeInterval: 0.1,
             primaryLabelInterval: 1,
             style: {
@@ -51,12 +48,15 @@
             },
         });
         
+        let media = newCue.source.createMedia();
+
         waveSurfer = WaveSurfer.create({
             container: waveform,
             waveColor: waveColor,
             progressColor: completedColor,
             height: "auto",
-            url: EchoBackend.getAudioUrl(get(EchoStores.openedProject), newCue.source.file),
+            url: newCue.source.createUrl().getOr(null),
+            media: media.getOr(null),
             barWidth: 2,
             barGap: 2,
             barRadius: 8,
@@ -142,6 +142,8 @@
       flex-direction: row;
       align-items: center;
       justify-content: center;
+      
+      margin-top: 8px;
       
       span {
         line-height: 100%;

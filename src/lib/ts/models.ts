@@ -1,31 +1,48 @@
 import {EchoBackend} from "./api";
 import {EchoStores} from "./stores";
 import {get} from "svelte/store";
+import {Optional} from "./utils";
 
 export enum EchoAudioSourceType {
     File = "Audio File",
+    Link = "Link",
 }
 
 export const EchoAudioSourceMapper = new Map<EchoAudioSourceType, () => EchoAudioSource>()
-    .set(EchoAudioSourceType.File, () => new EchoFileAudioSource());
+    .set(EchoAudioSourceType.File, () => new EchoFileAudioSource())
+    .set(EchoAudioSourceType.Link, () => new EchoLinkAudioSource());
 
 export interface EchoAudioSource {
     type: EchoAudioSourceType;
-
-    play(): Promise<void>;
+    
+    createMedia(): Optional<HTMLAudioElement>
+    
+    createUrl(): Optional<string>
 }
 
-export class EchoFileAudioSource implements EchoAudioSource {
+class EchoFileAudioSource implements EchoAudioSource {
     file: string;
     type: EchoAudioSourceType = EchoAudioSourceType.File;
 
-    async play(): Promise<void> {
-        // TODO
-        // let audioUrl = EchoBackend.getAudioUrl(get(EchoStores.openedProject), this.file);
-        // let sound = new Howler({
-        //     src: [audioUrl]
-        // })
-        // sound.play();
+    createMedia(): Optional<HTMLAudioElement> {
+        return Optional.none();
+    }
+
+    createUrl(): Optional<string> {
+        return Optional.some(EchoBackend.getAudioUrl(get(EchoStores.openedProject), this.file));
+    }
+}
+
+class EchoLinkAudioSource implements EchoAudioSource {
+    link: string;
+    type: EchoAudioSourceType = EchoAudioSourceType.Link;
+    
+    createMedia(): Optional<HTMLAudioElement> {
+        return Optional.none();
+    }
+
+    createUrl(): Optional<string> {
+        return Optional.some(this.link);
     }
 }
 

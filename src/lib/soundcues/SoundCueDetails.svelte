@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {EchoSoundCue} from "../ts/models";
+    import type {EchoAudioSource, EchoSoundCue} from "../ts/models";
     import SoundCueProp from "./SoundCueProp.svelte";
     import SelectDropdown from "../comps/SelectDropdown.svelte";
     import {EchoAudioSourceMapper, EchoAudioSourceType} from "../ts/models";
@@ -11,6 +11,7 @@
     let waveform: SoundCueWaveform;
     let enableVolumeOverlay: boolean = false;
 
+    // Called by SoundCuesTab
     export function updatedCue(newCue: EchoSoundCue) {
         cue = newCue;
         updateWaveform(newCue, enableVolumeOverlay);
@@ -24,7 +25,11 @@
     $: {
         updateWaveform(cue, enableVolumeOverlay);
     }
-
+    
+    function changedSourceType(event) {
+        cue.source = EchoAudioSourceMapper.get(event.detail.option)();
+    }
+    
 </script>
 
 {#if cue}
@@ -38,23 +43,24 @@
                 </SoundCueProp>
                 <SoundCueProp propName="Audio Source">
                     <div id="audio-source">
-                        <SelectDropdown options={Array.from(EchoAudioSourceMapper.keys())} bind:selected={cue.source.type}/>
+                        <SelectDropdown options={Array.from(EchoAudioSourceMapper.keys())} on:selectedoption={changedSourceType} selected={cue.source.type}/>
                         <div id="audio-source-details">
                             {#if cue.source.type === EchoAudioSourceType.File}
                                 <FilePicker initialValue={cue.source.file}/>
+                            {:else if cue.source.type === EchoAudioSourceType.Link}
+                                <input placeholder="Enter a link to an audio" type="text" bind:value={cue.source.link}/>
                             {/if}
                         </div>
                     </div>
                 </SoundCueProp>
+                <button on:click={() => console.log(cue)}>TEST</button>
             </div>
             <div id="property-details" class="middleground">
                 <h3>Advanced Settings</h3>
-                <SoundCueProp propName="Overlays">
-                    <div id="overlays">
-                        <Toggle bind:enabled={enableVolumeOverlay}>
-                            <span>Volume</span>
-                        </Toggle>
-                    </div>
+                <SoundCueProp propName="Volume">
+                    <Toggle bind:enabled={enableVolumeOverlay}>
+                        <span>Enable Overlay</span>
+                    </Toggle>
                 </SoundCueProp>
             </div>
         </div>
