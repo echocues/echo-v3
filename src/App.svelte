@@ -1,11 +1,13 @@
 <script lang="ts">
     import ProjectDetails from "./lib/ProjectDetails.svelte";
+    import Home from "./lib/homepage/Home.svelte";
     import ProjectsList from "./lib/projects/ProjectsList.svelte";
     import Router from "svelte-spa-router";
     
     const routes = {
-        "/": ProjectsList,
-        "/project/:id": ProjectDetails,
+        "/": Home,
+		"/app/projects": ProjectsList,
+        "/app/project/:id": ProjectDetails,
     }
 </script>
 

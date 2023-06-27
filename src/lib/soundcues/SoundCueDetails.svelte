@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {EchoAudioSource, EchoSoundCue} from "../ts/models";
+    import type {EchoSoundCue} from "../ts/models";
     import SoundCueProp from "./SoundCueProp.svelte";
     import SelectDropdown from "../comps/SelectDropdown.svelte";
     import {EchoAudioSourceMapper, EchoAudioSourceType} from "../ts/models";

@@ -4,7 +4,7 @@
     export let project: EchoProject;
 </script>
 
-<a class="project-card" href="#/project/{project.project_id}">
+<a class="project-card" href="#/app/project/{project.project_id}">
     <h3>{project.title}</h3>
     <p>{project.description}</p>
 </a>
