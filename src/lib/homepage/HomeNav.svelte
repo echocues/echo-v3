@@ -9,7 +9,6 @@
     <span>|</span>
     <button on:click={() => dispatcher("about-us", {})} class="sub">About Us</button>
     <button on:click={() => dispatcher("contact", {})} class="sub">Contact</button>
-    <button on:click={() => dispatcher("pricing", {})} class="sub">Pricing</button>
     <button on:click={() => dispatcher("login", {})} class="sub">Login</button>
 </div>
 
