@@ -1,6 +1,7 @@
 <script lang="ts">
 import HomeNav from "./HomeNav.svelte";
 import {fade} from "svelte/transition";
+import {EchoBackend} from "../ts/api";
 
 enum Page {
     Landing,
@@ -9,6 +10,9 @@ enum Page {
 }
 
 let currPage: Page = Page.Landing;
+
+let username: string;
+let password: string;
 
 </script>
 
@@ -30,18 +34,17 @@ let currPage: Page = Page.Landing;
         </div>
     {:else if currPage === Page.Features}
         <div in:fade={{ delay: 400 }} out:fade>
-            
         </div>
 	{:else if currPage === Page.Login}
         <div in:fade={{ delay: 400 }} out:fade>
             <div id="login">
                 <h2>Login</h2>
 				<div id="fields">
-					<input type="text" placeholder="Username">
-					<input type="text" placeholder="Password">
+					<input type="text" placeholder="Username" bind:value={username}>
+					<input type="text" placeholder="Password" bind:value={password}>
 					<button>or Register an Account</button>
 				</div>
-                <button class="cta-sub" on:click={() => currPage = Page.Features}>Login</button>
+                <button class="cta-sub" on:click={() => EchoBackend.loginAuth(username, password)}>Login</button>
             </div>
         </div>
     {/if}
